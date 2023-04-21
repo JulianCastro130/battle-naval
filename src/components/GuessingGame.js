@@ -29,6 +29,7 @@ export default function GuessingGame() {
         setFire(e.target.value);
         if (fire === battleField2) {
           setMessage("Barco 2 hundido, Player 1 gana");
+          window.location.reload(false);
         }
       }
       setTurn(2);
@@ -39,6 +40,7 @@ export default function GuessingGame() {
         setFire(e.target.value);
         if (fire === battleField1) {
           setMessage("Barco 1 hundido, Player 2 gana");
+          window.location.reload(false);
         }
       }
       setTurn(1);
