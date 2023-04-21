@@ -9,12 +9,16 @@ export default function GuessingGame() {
 
   useEffect(() => {
     if (fire) {
-      if (fire === battleField1) {
-        setMessage("Barco 1 hundido, Player 2 gana");
-      } else if (fire === battleField2) {
-        setMessage("Barco 2 hundido, Player 1 gana");
+      if (turn === 1) {
+        if (fire === battleField1) {
+          setMessage("Barco 1 hundido, Player 2 gana");
+      } else {
+        if (fire === battleField2) {
+          setMessage("Barco 2 hundido, Player 1 gana");
+        }
       }
     }
+  }
   }, [fire, battleField1, battleField2]);
 
   function handleClick1(e, t) {
