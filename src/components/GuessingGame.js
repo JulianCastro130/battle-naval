@@ -56,8 +56,6 @@ export default function GuessingGame() {
       <div>
         <button>Seguir</button>
       </div>
-      <p>sea1: {sea1}</p>
-      <p>sea2: {sea2}</p>
     </div>
   );
 }
