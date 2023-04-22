@@ -1,79 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Game from "./Game";
 
 export default function GuessingGame() {
-  const [message, setMessage] = useState(null);
   const [turn, setTurn] = useState(1);
-  const [battleField1, setBattleField1] = useState(null);
-  const [battleField2, setBattleField2] = useState(null);
+  const [sea1, setSea1] = useState(null);
+  const [sea2, setSea2] = useState(null);
   const [fire, setFire] = useState(null);
-
-  useEffect(() => {
-    if (fire) {
-      if (turn === 1) {
-        if (fire === battleField1) {
-          setMessage("Barco 1 hundido, Player 2 gana");
-      } else {
-        if (fire === battleField2) {
-          setMessage("Barco 2 hundido, Player 1 gana");
-        }
-      }
-    }
-  }
-  }, [fire, battleField1, battleField2]);
+  const [message, setMessage] = useState("Player 1 coloca tu barco");
 
   function handleClick1(e, t) {
-    if (t === 1) {
-      if (!battleField1) {
-        setBattleField1(e.target.value);
-      } else {
-        setFire(e.target.value);
-        if (fire === battleField2) {
-          setMessage("Barco 2 hundido, Player 1 gana");
-          window.location.reload(false);
+        switch (turn) {
+          case 1:
+            setSea1(e.target.value);
+            setMessage("Player 2 coloca tu barco");
+            setTurn(2);
+            break;
+          case 2:
+            setSea2(e.target.value);
+            setMessage("Player 1 ataca")
+            setTurn(1);
+            break;
+          default:
+            break;
         }
-      }
-      setTurn(2);
-    } else {
-      if (!battleField2) {
-        setBattleField2(e.target.value);
-      } else {
-        setFire(e.target.value);
-        if (fire === battleField1) {
-          setMessage("Barco 1 hundido, Player 2 gana");
-          window.location.reload(false);
-        }
-      }
-      setTurn(1);
-    }
   }
 
   return (
     <div>
-      fire: {fire}
-      <br />
-      message: {message}
-      <br />
-      ship1: {battleField1}
-      <br />
-      ship2: {battleField2}
-        {battleField1 && battleField2 ? (
-          <div>Hora de atacar Player {turn}</div>
-        ) : (
-          <div>
-            <p>Player {turn}, place the ship:</p>
-          </div>
-        )}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((number) => (
-          <button
-            key={number}
-            value={number}
-            onClick={(e) => handleClick1(e, turn)}
+      <p>Es el turno del player {turn}</p>
+      <h1>{message}</h1>
+      {!sea2 && (
+        <div>
+          <div
+            style={{
+              height: "600px",
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 200px)",
+            }}
           >
-            {number}
-          </button>
-        ))}
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
+              (number) => (
+                <button
+                  key={number}
+                  value={number}
+                  onClick={(e) => handleClick1(e, turn)}
+                >
+                  {number}
+                </button>
+              )
+            )}
+          </div>
+        </div>
+      )}
+      {sea2 && <Game sea1={sea1} sea2={sea2} turn={turn} setTurn={setTurn} setMessage={setMessage} />}
+      <div>
+        <button>Seguir</button>
       </div>
+      <p>sea1: {sea1}</p>
+      <p>sea2: {sea2}</p>
     </div>
   );
 }
