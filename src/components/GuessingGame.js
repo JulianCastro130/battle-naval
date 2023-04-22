@@ -53,9 +53,6 @@ export default function GuessingGame() {
         </div>
       )}
       {sea2 && <Game sea1={sea1} sea2={sea2} turn={turn} setTurn={setTurn} setMessage={setMessage} />}
-      <div>
-        <button>Seguir</button>
-      </div>
     </div>
   );
 }
