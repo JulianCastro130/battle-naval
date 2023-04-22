@@ -1,9 +1,12 @@
-import GuessingGame from '@/components/GuessingGame'
-import { Inter } from 'next/font/google'
+import GuessingGame from "@/components/GuessingGame";
+import { Inter } from "next/font/google";
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import { useEffect } from 'react';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+import { useEffect } from "react";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBybaGmuldFhzstL-SpMB0_63Fjr-XCKGU",
@@ -17,19 +20,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  useEffect(() => {
 
-  useEffect(()=>{
-    const shipsCollectionRef = collection(db, 'ships');
-    getDocs(shipsCollectionRef).then(res => console.log(res))
-  },[])
+
+      const shipsCollectionRef = collection(db, "ships");
+      getDocs(shipsCollectionRef).then((res) =>
+        console.log(res.docs[0]._document.data.value.mapValue.fields)
+      );
+
+  }, []);
 
   return (
     <>
       <h1>Naval Battle Game</h1>
-      <GuessingGame />
+      <GuessingGame db={db}/>
     </>
-  )
+  );
 }

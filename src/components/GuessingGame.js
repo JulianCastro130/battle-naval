@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import Game from "./Game";
+import { doc, updateDoc } from "firebase/firestore";
 
-export default function GuessingGame() {
+export default function GuessingGame({db}) {
   const [turn, setTurn] = useState(1);
-  const [sea1, setSea1] = useState(null);
   const [sea2, setSea2] = useState(null);
-  const [fire, setFire] = useState(null);
   const [message, setMessage] = useState("Player 1 coloca tu barco");
 
-  function handleClick1(e, t) {
+  async function handleClick1(e) {
         switch (turn) {
           case 1:
-            setSea1(e.target.value);
+            await updateDoc(doc(db, "ships", "ships"), {
+              locX: parseInt(e.target.value),
+            });
             setMessage("Player 2 coloca tu barco");
             setTurn(2);
             break;
           case 2:
-            setSea2(e.target.value);
+            await updateDoc(doc(db, "ships", "ships"), {
+              locY: parseInt(e.target.value),
+            });
+            setSea2(true);
             setMessage("Player 1 ataca")
             setTurn(1);
             break;
@@ -43,7 +47,7 @@ export default function GuessingGame() {
                 <button
                   key={number}
                   value={number}
-                  onClick={(e) => handleClick1(e, turn)}
+                  onClick={(e) => handleClick1(e)}
                 >
                   {number}
                 </button>
@@ -52,7 +56,7 @@ export default function GuessingGame() {
           </div>
         </div>
       )}
-      {sea2 && <Game sea1={sea1} sea2={sea2} turn={turn} setTurn={setTurn} setMessage={setMessage} />}
+      {sea2 && <Game turn={turn} setTurn={setTurn} setMessage={setMessage} db={db}/>}
     </div>
   );
 }
